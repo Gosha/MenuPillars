@@ -26,6 +26,9 @@ namespace MenuPillars.Managers
 		private List<TubeBloomPrePassLight>? _pillarLights;
 		private Transform? _menuEnvironmentTransform;
 
+		private Light? _pillarBackLeftLight;
+		private Light? _pillarBackRightLight;
+
         private List<TubeBloomPrePassLight> Lights => _pillarLights ??= [.. _menuPillars!.GetComponentsInChildren<TubeBloomPrePassLight>()];
 		
 		public event Action<Color>? CurrentColorChanged; 
@@ -219,7 +222,33 @@ namespace MenuPillars.Managers
 			};
 			_timeTweeningManager.AddTween(_rainbowTween, this);
 		}
-		
+
+		private void AddPillarPointLights()
+		{
+			if (!_instantiatedPillars) return;
+
+			_pillarBackRightLight = _pillarBackRight?.AddComponent<Light>();
+			_pillarBackLeftLight = _pillarBackLeft?.AddComponent<Light>();
+
+			SetupPointLights();
+			CurrentColorChanged += (color) => { SetupPointLights(); };
+		}
+
+		public void SetupPointLights()
+		{
+			if (!_instantiatedPillars) return;
+
+			foreach (var light in new[] { _pillarBackRightLight, _pillarBackLeftLight })
+			{
+				if (light == null) continue;
+				light.type = UnityEngine.LightType.Point;
+				light.color = CurrentColor;
+				light.range = _pluginConfig.PointLightRange;
+				light.intensity = _pluginConfig.PointLightIntensity;
+				light.shadows = LightShadows.None;
+				light.renderMode = LightRenderMode.ForcePixel;
+			}
+		}
 		public void KillAllTweens() => _timeTweeningManager.KillAllTweens(this);
 		
 		private void InstantiatePillars()
@@ -250,6 +279,7 @@ namespace MenuPillars.Managers
 
 			ToggleRainbowColors(_pluginConfig.EnableLights && _pluginConfig.RainbowLights);
 			SetPillarLightBrightness(_pluginConfig.LightsBrightness);
+			AddPillarPointLights();
 		}
 	}
 }

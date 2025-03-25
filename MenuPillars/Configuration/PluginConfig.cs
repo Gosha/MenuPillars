@@ -16,5 +16,8 @@ namespace MenuPillars.Configuration
 		public virtual bool VisualizeAudio { get; set; } = false;
 		public virtual bool RainbowLights { get; set; } = false;
 		public virtual float RainbowLoopSpeed { get; set; } = 5f;
+
+		public virtual float PointLightRange { get; set; } = 100f;
+		public virtual float PointLightIntensity { get; set; } = 1f;
 	}
 }

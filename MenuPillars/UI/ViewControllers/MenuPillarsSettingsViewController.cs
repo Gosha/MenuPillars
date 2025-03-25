@@ -172,7 +172,29 @@ namespace MenuPillars.UI.ViewControllers
 				}
 			}
 		}
-		
+
+		[UIValue("point-light-range")]
+		private float PointLightRange
+		{
+			get => _pluginConfig.PointLightRange;
+			set
+			{
+				_pluginConfig.PointLightRange = value;
+				_menuPillarsManager.SetupPointLights();
+			}
+		}
+
+		[UIValue("point-light-intensity")]
+		private float PointLightIntensity
+		{
+			get => _pluginConfig.PointLightIntensity;
+			set
+			{
+				_pluginConfig.PointLightIntensity = value;
+				_menuPillarsManager.SetupPointLights();
+			}
+		}
+
 		[UIValue("version-text-value")]
 		private string VersionText => $"{_pluginMetadata.Name} v{_pluginMetadata.HVersion} by {_pluginMetadata.Author}";
 
