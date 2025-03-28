@@ -244,7 +244,7 @@ namespace MenuPillars.Managers
 				light.type = UnityEngine.LightType.Point;
 				light.color = CurrentColor;
 				light.range = _pluginConfig.PointLightRange;
-				light.intensity = _pluginConfig.PointLightIntensity;
+				light.intensity = _pluginConfig.PointLightIntensity * CurrentColor.a;
 				light.shadows = LightShadows.None;
 				light.renderMode = LightRenderMode.ForcePixel;
 			}
